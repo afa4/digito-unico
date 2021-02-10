@@ -1,18 +1,26 @@
 package com.example.digitounico.service;
 
+import com.example.digitounico.util.Pair;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
+@Getter
 @Service
 public class SingleDigitService {
 
-    private Map<String, Integer> lastTenCalculations = new HashMap<>();
+    private final LinkedList<Pair<String, Integer>> lastTenCalculations = new LinkedList<>();
 
     public int getSingleDigit(String number, int repeatTimes) {
         if (number.matches("[0-9]*")) {
-            return getSingleDigit(repeatTimes <= 0 ? number : number.repeat(repeatTimes));
+            var inputNumber = repeatTimes <= 0 ? number : number.repeat(repeatTimes);
+
+            var result = getSingleDigit(inputNumber);
+
+            storeResultInMemory(inputNumber, result);
+
+            return result;
         }
         throw new RuntimeException();
     }
@@ -26,5 +34,18 @@ public class SingleDigitService {
             number = Integer.toString(sum);
         }
         return Integer.parseInt(number);
+    }
+
+    private void storeResultInMemory(String inputNumber, Integer result) {
+        if (lastTenCalculations.size() == 10)
+            lastTenCalculations.removeLast();
+
+        lastTenCalculations.addFirst(new Pair<>(inputNumber, result));
+    }
+
+    private Pair getResultFromMemory(String inputNumber) {
+        return lastTenCalculations.stream()
+                .filter(pair -> pair.getKey().equals(inputNumber))
+                .findFirst().orElse(null);
     }
 }
