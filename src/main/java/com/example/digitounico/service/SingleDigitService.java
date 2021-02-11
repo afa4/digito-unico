@@ -1,28 +1,26 @@
 package com.example.digitounico.service;
 
-import com.example.digitounico.util.Pair;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.Objects;
 
-@Getter
 @Service
+@RequiredArgsConstructor
 public class SingleDigitService {
 
-    private final LinkedList<Pair<String, Integer>> lastTenCalculations = new LinkedList<>();
+    private final SingleDigitCacheService cache;
 
     public int getSingleDigit(String number, int repeatTimes) {
         if (number.matches("[0-9]*")) {
             var inputNumber = repeatTimes <= 0 ? number : number.repeat(repeatTimes);
 
-            var resultFromMemory = getResultFromMemory(inputNumber);
+            var resultFromMemory = cache.get(inputNumber);
             if (Objects.nonNull(resultFromMemory))
                 return resultFromMemory.getValue();
 
             var result = getSingleDigit(inputNumber);
-            storeResultInMemory(inputNumber, result);
+            cache.store(inputNumber, result);
 
             return result;
         }
@@ -38,19 +36,5 @@ public class SingleDigitService {
             number = Integer.toString(sum);
         }
         return Integer.parseInt(number);
-    }
-
-    private void storeResultInMemory(String inputNumber, Integer result) {
-        if (lastTenCalculations.size() == 10)
-            lastTenCalculations.removeLast();
-
-        lastTenCalculations.addFirst(new Pair<>(inputNumber, result));
-    }
-
-    private Pair<String, Integer> getResultFromMemory(String inputNumber) {
-        return lastTenCalculations.stream()
-                .filter(pair -> pair.getKey().equals(inputNumber))
-                .findFirst()
-                .orElse(null);
     }
 }
