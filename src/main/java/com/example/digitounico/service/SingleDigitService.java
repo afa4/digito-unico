@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 @Getter
 @Service
@@ -16,8 +17,11 @@ public class SingleDigitService {
         if (number.matches("[0-9]*")) {
             var inputNumber = repeatTimes <= 0 ? number : number.repeat(repeatTimes);
 
-            var result = getSingleDigit(inputNumber);
+            var resultFromMemory = getResultFromMemory(inputNumber);
+            if (Objects.nonNull(resultFromMemory))
+                return resultFromMemory.getValue();
 
+            var result = getSingleDigit(inputNumber);
             storeResultInMemory(inputNumber, result);
 
             return result;
@@ -43,9 +47,10 @@ public class SingleDigitService {
         lastTenCalculations.addFirst(new Pair<>(inputNumber, result));
     }
 
-    private Pair getResultFromMemory(String inputNumber) {
+    private Pair<String, Integer> getResultFromMemory(String inputNumber) {
         return lastTenCalculations.stream()
                 .filter(pair -> pair.getKey().equals(inputNumber))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 }
