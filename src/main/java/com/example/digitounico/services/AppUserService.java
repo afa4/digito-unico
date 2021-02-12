@@ -1,6 +1,7 @@
 package com.example.digitounico.services;
 
 import com.example.digitounico.entities.AppUser;
+import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class AppUserService {
 
     private final AppUserRepository appUserRepository;
 
-    public void create(AppUser user) {
-        appUserRepository.create(user);
+    public void create(UserRequest user) {
+        appUserRepository.create(user.toAppUser());
     }
 
     public List<AppUser> findAll() {
@@ -28,13 +29,15 @@ public class AppUserService {
         return appUserRepository.findByUid(uuid);
     }
 
-    public void updateOrCreate(AppUser user) {
-        var fetchedUser = appUserRepository.findByUid(user.getUid());
+    public void updateOrCreate(UUID uid, UserRequest user) {
+        var fetchedUser = appUserRepository.findByUid(uid);
 
         if (nonNull(fetchedUser)) {
-            appUserRepository.update(user);
+            fetchedUser.setName(user.getName());
+            fetchedUser.setEmail(user.getEmail());
+            appUserRepository.update(fetchedUser);
         } else {
-            create(user);
+            appUserRepository.create(user.toAppUser(uid));
         }
     }
 

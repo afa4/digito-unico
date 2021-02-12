@@ -1,1 +1,1 @@
-INSERT INTO APP_USER(name, email) values (:name, :email);
+INSERT INTO APP_USER(uid, name, email) values (:uid, :name, :email);

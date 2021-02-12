@@ -1,6 +1,7 @@
 package com.example.digitounico.controllers;
 
 import com.example.digitounico.entities.AppUser;
+import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.services.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @PostMapping("/users")
-    public ResponseEntity create(@RequestBody AppUser user) {
+    public ResponseEntity create(@RequestBody UserRequest user) {
         appUserService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -32,9 +33,8 @@ public class AppUserController {
     }
 
     @PutMapping("/users/{uid}")
-    public ResponseEntity update(@PathVariable UUID uid, @RequestBody AppUser user) {
-        user.setUid(uid);
-        appUserService.updateOrCreate(user);
+    public ResponseEntity update(@PathVariable UUID uid, @RequestBody UserRequest user) {
+        appUserService.updateOrCreate(uid, user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -43,4 +43,10 @@ public class AppUserController {
         appUserService.delete(uid);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @PatchMapping("/users/{uid}/encrypt")
+    public ResponseEntity encrypt(){
+        return null;
+    }
+
 }

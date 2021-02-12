@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.Objects.nonNull;
+
 @Repository
 @RequiredArgsConstructor
 public class AppUserRepository {
@@ -19,6 +21,7 @@ public class AppUserRepository {
 
     public void create(AppUser appUser) {
         var params = Map.of(
+                "uid", nonNull(appUser.getUid()) ? appUser.getUid() : UUID.randomUUID(),
                 "name", appUser.getName(),
                 "email", appUser.getEmail()
         );
