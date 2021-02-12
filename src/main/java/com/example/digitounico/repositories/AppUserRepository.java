@@ -4,6 +4,7 @@ import com.example.digitounico.entities.AppUser;
 import com.example.digitounico.repositories.mappers.AppUserMapper;
 import com.example.digitounico.repositories.queries.AppUserQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,8 +38,12 @@ public class AppUserRepository {
         var params = Map.of(
                 "uid", uid
         );
-        return namedParameterJdbcTemplate.queryForObject(
-                AppUserQuery.SELECT_BY_UID.getQuery(), params, appUserMapper);
+        try {
+            return namedParameterJdbcTemplate.queryForObject(
+                    AppUserQuery.SELECT_BY_UID.getQuery(), params, appUserMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void update(AppUser appUser) {
