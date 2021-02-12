@@ -1,4 +1,4 @@
-package com.example.digitounico.service;
+package com.example.digitounico.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

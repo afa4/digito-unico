@@ -1,4 +1,4 @@
-package com.example.digitounico.util;
+package com.example.digitounico.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

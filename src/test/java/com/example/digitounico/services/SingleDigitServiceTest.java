@@ -1,4 +1,4 @@
-package com.example.digitounico.service;
+package com.example.digitounico.services;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package com.example.digitounico.controller;
+package com.example.digitounico.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 

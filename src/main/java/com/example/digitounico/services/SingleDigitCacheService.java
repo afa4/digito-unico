@@ -1,6 +1,6 @@
-package com.example.digitounico.service;
+package com.example.digitounico.services;
 
-import com.example.digitounico.util.Pair;
+import com.example.digitounico.utils.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
