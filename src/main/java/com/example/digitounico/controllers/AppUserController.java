@@ -1,7 +1,7 @@
 package com.example.digitounico.controllers;
 
 import com.example.digitounico.entities.AppUser;
-import com.example.digitounico.repositories.AppUserRepository;
+import com.example.digitounico.services.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,34 +13,34 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AppUserController {
 
-    private final AppUserRepository appUserRepository;
+    private final AppUserService appUserService;
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody AppUser user) {
-        appUserRepository.create(user);
+        appUserService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/users")
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(appUserRepository.selectAll());
+        return ResponseEntity.ok(appUserService.findAll());
     }
 
     @GetMapping("/users/{uid}")
     public ResponseEntity getByUid(@PathVariable UUID uid) {
-        return ResponseEntity.ok(appUserRepository.selectByUid(uid));
+        return ResponseEntity.ok(appUserService.findByUid(uid));
     }
 
     @PutMapping("/users/{uid}")
     public ResponseEntity update(@PathVariable UUID uid, @RequestBody AppUser user) {
         user.setUid(uid);
-        appUserRepository.update(user);
+        appUserService.updateOrCreate(user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/users/{uid}")
     public ResponseEntity deleteByUid(@PathVariable UUID uid) {
-        appUserRepository.delete(uid);
+        appUserService.delete(uid);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

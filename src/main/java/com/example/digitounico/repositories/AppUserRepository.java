@@ -25,12 +25,12 @@ public class AppUserRepository {
         namedParameterJdbcTemplate.update(AppUserQuery.INSERT.getQuery(), params);
     }
 
-    public List<AppUser> selectAll() {
+    public List<AppUser> findAll() {
         return namedParameterJdbcTemplate.query(
                 AppUserQuery.SELECT_ALL.getQuery(), Map.of(), appUserMapper);
     }
 
-    public AppUser selectByUid(UUID uid) {
+    public AppUser findByUid(UUID uid) {
         var params = Map.of(
                 "uid", uid
         );
