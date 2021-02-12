@@ -9,6 +9,7 @@ public enum AppUserQuery {
     UPDATE("appuser/update-by-uid.sql"),
     SELECT_ALL("appuser/select-all.sql"),
     SELECT_BY_UID("appuser/select-by-uid.sql"),
+    SELECT_BY_EMAIL("appuser/select-by-email.sql"),
     DELETE("appuser/delete-by-uid.sql");
 
     private final String query;

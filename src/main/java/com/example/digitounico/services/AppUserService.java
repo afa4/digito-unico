@@ -2,6 +2,7 @@ package com.example.digitounico.services;
 
 import com.example.digitounico.entities.AppUser;
 import com.example.digitounico.entities.dto.UserRequest;
+import com.example.digitounico.exceptions.ApplicationException;
 import com.example.digitounico.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.digitounico.exceptions.ApplicationExceptionType.EMAIL_ALREADY_USED;
+import static com.example.digitounico.exceptions.ApplicationExceptionType.ENTITY_NOT_FOUND;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -17,8 +21,13 @@ public class AppUserService {
 
     private final AppUserRepository appUserRepository;
 
-    public void create(UserRequest user) {
-        appUserRepository.create(user.toAppUser());
+    public void create(UUID uid, UserRequest user) {
+        var fetchedUser = appUserRepository.findByEmail(user.getEmail());
+
+        if (nonNull(fetchedUser))
+            throw new ApplicationException(EMAIL_ALREADY_USED);
+
+        appUserRepository.create(nonNull(uid) ? user.toAppUser(uid) : user.toAppUser());
     }
 
     public List<AppUser> findAll() {
@@ -26,7 +35,12 @@ public class AppUserService {
     }
 
     public AppUser findByUid(UUID uuid) {
-        return appUserRepository.findByUid(uuid);
+        var fetchedUser = appUserRepository.findByUid(uuid);
+
+        if (isNull(fetchedUser))
+            throw new ApplicationException(ENTITY_NOT_FOUND);
+
+        return fetchedUser;
     }
 
     public void updateOrCreate(UUID uid, UserRequest user) {
@@ -37,7 +51,7 @@ public class AppUserService {
             fetchedUser.setEmail(user.getEmail());
             appUserRepository.update(fetchedUser);
         } else {
-            appUserRepository.create(user.toAppUser(uid));
+            create(uid, user);
         }
     }
 

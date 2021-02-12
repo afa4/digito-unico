@@ -46,6 +46,18 @@ public class AppUserRepository {
         }
     }
 
+    public AppUser findByEmail(String email) {
+        var params = Map.of(
+                "email", email
+        );
+        try {
+            return namedParameterJdbcTemplate.queryForObject(
+                    AppUserQuery.SELECT_BY_EMAIL.getQuery(), params, appUserMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public void update(AppUser appUser) {
         var params = Map.of(
                 "uid", appUser.getUid(),

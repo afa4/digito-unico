@@ -1,6 +1,5 @@
 package com.example.digitounico.controllers;
 
-import com.example.digitounico.entities.AppUser;
 import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.services.AppUserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class AppUserController {
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody UserRequest user) {
-        appUserService.create(user);
+        appUserService.create(null, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -45,7 +44,7 @@ public class AppUserController {
     }
 
     @PatchMapping("/users/{uid}/encrypt")
-    public ResponseEntity encrypt(){
+    public ResponseEntity encrypt(@PathVariable UUID uid) {
         return null;
     }
 
