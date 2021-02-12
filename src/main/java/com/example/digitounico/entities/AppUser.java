@@ -3,6 +3,7 @@ package com.example.digitounico.entities;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -12,5 +13,5 @@ public class AppUser {
     private Long id;
     private UUID uid;
     private @NotNull String name;
-    private @NotNull String email;
+    private @NotNull @Email String email;
 }
