@@ -1,0 +1,1 @@
+INSERT INTO APP_USER(name, email) values (:name, :email);
