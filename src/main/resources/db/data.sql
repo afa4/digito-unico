@@ -1,0 +1,1 @@
+INSERT INTO APP_USER(name, email) VALUES ('Adam', 'adam@eden.com');
