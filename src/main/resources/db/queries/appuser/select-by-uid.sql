@@ -1,1 +1,1 @@
-SELECT (id, uid, name, email) FROM APP_USER WHERE uid = :uid;
+SELECT id, uid, name, email FROM APP_USER WHERE uid = :uid;

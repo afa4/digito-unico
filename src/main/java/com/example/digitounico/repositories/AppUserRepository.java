@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,14 +25,14 @@ public class AppUserRepository {
         namedParameterJdbcTemplate.update(AppUserQuery.INSERT.getQuery(), params);
     }
 
-    public List<AppUser> selectAll(AppUser appUser) {
+    public List<AppUser> selectAll() {
         return namedParameterJdbcTemplate.query(
                 AppUserQuery.SELECT_ALL.getQuery(), Map.of(), appUserMapper);
     }
 
-    public AppUser selectByUid(AppUser appUser) {
+    public AppUser selectByUid(UUID uid) {
         var params = Map.of(
-                "uid", appUser.getUid()
+                "uid", uid
         );
         return namedParameterJdbcTemplate.queryForObject(
                 AppUserQuery.SELECT_BY_UID.getQuery(), params, appUserMapper);
@@ -39,15 +40,16 @@ public class AppUserRepository {
 
     public void update(AppUser appUser) {
         var params = Map.of(
+                "uid", appUser.getUid(),
                 "name", appUser.getName(),
                 "email", appUser.getEmail()
         );
         namedParameterJdbcTemplate.update(AppUserQuery.UPDATE.getQuery(), params);
     }
 
-    public void delete(AppUser appUser) {
+    public void delete(UUID uid) {
         var params = Map.of(
-                "uid", appUser.getUid()
+                "uid", uid
         );
         namedParameterJdbcTemplate.update(AppUserQuery.DELETE.getQuery(), params);
     }

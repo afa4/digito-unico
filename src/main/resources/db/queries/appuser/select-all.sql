@@ -1,1 +1,1 @@
-SELECT (id, uid, name, email) FROM APP_USER;
+SELECT id, uid, name, email FROM APP_USER;
