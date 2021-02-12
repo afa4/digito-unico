@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ApplicationExceptionType {
 
     ENTITY_NOT_FOUND("Entidade não encontrada.", HttpStatus.NOT_FOUND),
-    EMAIL_ALREADY_USED("Este email já está sendo utilizado.", HttpStatus.BAD_REQUEST);
+    EMAIL_ALREADY_USED("Email já cadastrado.", HttpStatus.CONFLICT);
 
     private final String message;
     private final HttpStatus returnStatus;

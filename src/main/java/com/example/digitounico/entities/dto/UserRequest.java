@@ -1,6 +1,7 @@
 package com.example.digitounico.entities.dto;
 
 import com.example.digitounico.entities.AppUser;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class UserRequest {
     private @NotNull String name;
     private @NotNull @Email String email;

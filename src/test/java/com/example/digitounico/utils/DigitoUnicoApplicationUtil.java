@@ -14,10 +14,19 @@ public class DigitoUnicoApplicationUtil {
     public static AppUser mockAppUser() {
         var id = getRandomLongOnRange(1, 100);
         return AppUser.builder()
-                .id(getRandomLongOnRange(1, 100))
+                .id(id)
                 .uid(UUID.randomUUID())
                 .name("Mockson" + id)
                 .email("mockson" + id + "@email.com")
+                .build();
+    }
+
+    public static AppUser mockAppUser(String name, String email) {
+        return AppUser.builder()
+                .id(getRandomLongOnRange(1, 100))
+                .uid(UUID.randomUUID())
+                .name(name)
+                .email(email)
                 .build();
     }
 
