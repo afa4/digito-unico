@@ -24,8 +24,10 @@ public class CryptoUtil {
 
             var base64EncodedResult = Base64.getEncoder().encode(cipher.doFinal(data.getBytes()));
             return new String(base64EncodedResult);
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException e) {
             throw new ApplicationException(INTERNAL_ERROR);
+        } catch (IllegalBlockSizeException e) {
+            throw new ApplicationException(TOO_LONG_DATA_TO_BE_ENCRYPTED);
         } catch (InvalidKeyException | InvalidKeySpecException e) {
             throw new ApplicationException(INVALID_RSA_PUBLIC_KEY);
         }
@@ -39,8 +41,10 @@ public class CryptoUtil {
 
             var base64EncodedData = Base64.getDecoder().decode(data.getBytes());
             return new String(cipher.doFinal(base64EncodedData));
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException e) {
             throw new ApplicationException(INTERNAL_ERROR);
+        } catch (IllegalBlockSizeException e) {
+            throw new ApplicationException(TOO_LONG_DATA_TO_BE_DECRYPTED);
         } catch (InvalidKeyException | InvalidKeySpecException e) {
             throw new ApplicationException(INVALID_RSA_PRIVATE_KEY);
         }
