@@ -21,19 +21,19 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AppUserServiceTest {
+public class UsersCrudServiceTest {
     @Mock
     private AppUserRepository appUserRepository;
 
     @InjectMocks
-    private AppUserService appUserService;
+    private UsersCrudService usersCrudService;
 
     @Test
     public void shouldThrowApplicationException_whenTriesToCreateAppUserWithAnAlreadyRegisteredEmail() {
         when(appUserRepository.findByEmail(any())).thenReturn(mockAppUser("name", "email@Email.com"));
 
         try {
-            appUserService.create(null, new UserRequest("Bob", "email@Email.com"));
+            usersCrudService.create(null, new UserRequest("Bob", "email@Email.com"));
         } catch (ApplicationException ex) {
             Assertions.assertEquals("Email já cadastrado.", ex.getType().getMessage());
             Assertions.assertEquals(HttpStatus.CONFLICT, ex.getType().getReturnStatus());
@@ -44,7 +44,7 @@ public class AppUserServiceTest {
     public void shouldCreateAppUser_whenDoesntFindAnAlreadyRegisteredEmail() {
         when(appUserRepository.findByEmail(any())).thenReturn(null);
 
-        appUserService.create(null, new UserRequest("Bob", "bob@email.com"));
+        usersCrudService.create(null, new UserRequest("Bob", "bob@email.com"));
 
         var expected = AppUser.builder()
                 .name("Bob")
@@ -59,7 +59,7 @@ public class AppUserServiceTest {
         when(appUserRepository.findByUid(any())).thenReturn(null);
 
         try {
-            appUserService.findByUid(UUID.randomUUID());
+            usersCrudService.findByUid(UUID.randomUUID());
         } catch (ApplicationException ex) {
             Assertions.assertEquals("Entidade não encontrada.", ex.getType().getMessage());
             Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.getType().getReturnStatus());
@@ -70,7 +70,7 @@ public class AppUserServiceTest {
     public void shouldCallRepositoryFindAllMethod_whenFetchesAllUsers() {
         when(appUserRepository.findAll()).thenReturn(mockAppUserList(3));
 
-        appUserService.findAll();
+        usersCrudService.findAll();
 
         verify(appUserRepository).findAll();
     }
@@ -81,7 +81,7 @@ public class AppUserServiceTest {
 
         var randomUUID = UUID.randomUUID();
 
-        appUserService.delete(randomUUID);
+        usersCrudService.delete(randomUUID);
 
         verify(appUserRepository).delete(randomUUID);
     }

@@ -6,18 +6,18 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 
 @Service
-public class SingleDigitCacheService {
-    private final LinkedList<Pair<String, Integer>> lastTenCalculations = new LinkedList<>();
+public class CacheService {
+    private final LinkedList<Pair<String, Integer>> lastTenSingleDigits = new LinkedList<>();
 
     public void store(String inputNumber, Integer result) {
-        if (lastTenCalculations.size() == 10)
-            lastTenCalculations.removeLast();
+        if (lastTenSingleDigits.size() == 10)
+            lastTenSingleDigits.removeLast();
 
-        lastTenCalculations.addFirst(new Pair<>(inputNumber, result));
+        lastTenSingleDigits.addFirst(new Pair<>(inputNumber, result));
     }
 
     public Pair<String, Integer> get(String inputNumber) {
-        return lastTenCalculations.stream()
+        return lastTenSingleDigits.stream()
                 .filter(pair -> pair.getKey().equals(inputNumber))
                 .findFirst()
                 .orElse(null);

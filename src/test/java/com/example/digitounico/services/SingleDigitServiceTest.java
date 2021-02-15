@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class SingleDigitServiceTest {
 
     @Mock
-    private SingleDigitCacheService cache;
+    private CacheService cache;
 
     @InjectMocks
     private SingleDigitService singleDigitService;

@@ -1,7 +1,7 @@
 package com.example.digitounico.controllers;
 
 import com.example.digitounico.entities.dto.UserRequest;
-import com.example.digitounico.services.AppUserService;
+import com.example.digitounico.services.UsersCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,40 +11,45 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-public class AppUserController {
+public class UsersController {
 
-    private final AppUserService appUserService;
+    private final UsersCrudService usersCrudService;
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody UserRequest user) {
-        appUserService.create(null, user);
+        usersCrudService.create(null, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/users")
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(appUserService.findAll());
+        return ResponseEntity.ok(usersCrudService.findAll());
     }
 
     @GetMapping("/users/{uid}")
     public ResponseEntity getByUid(@PathVariable UUID uid) {
-        return ResponseEntity.ok(appUserService.findByUid(uid));
+        return ResponseEntity.ok(usersCrudService.findByUid(uid));
     }
 
     @PutMapping("/users/{uid}")
     public ResponseEntity update(@PathVariable UUID uid, @RequestBody UserRequest user) {
-        appUserService.updateOrCreate(uid, user);
+        usersCrudService.updateOrCreate(uid, user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/users/{uid}")
     public ResponseEntity deleteByUid(@PathVariable UUID uid) {
-        appUserService.delete(uid);
+        usersCrudService.delete(uid);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/users/{uid}/encrypt")
+    @PostMapping("/users/{uid}/encrypt")
     public ResponseEntity encrypt(@PathVariable UUID uid) {
+        return null;
+    }
+
+    @PostMapping("/users/{uid}/decrypt")
+    public ResponseEntity decrypt(@PathVariable UUID uid) {
         return null;
     }
 

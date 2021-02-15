@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserService {
+public class UsersCrudService {
 
     private final AppUserRepository appUserRepository;
 

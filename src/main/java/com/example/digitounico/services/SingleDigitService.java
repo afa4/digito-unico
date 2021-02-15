@@ -9,7 +9,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SingleDigitService {
 
-    private final SingleDigitCacheService cache;
+    private final CacheService cache;
 
     public int getSingleDigit(String number, int repeatTimes) {
         if (number.matches("[0-9]*")) {
