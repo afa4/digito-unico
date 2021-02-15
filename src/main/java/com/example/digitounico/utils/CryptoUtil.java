@@ -29,7 +29,7 @@ public class CryptoUtil {
         } catch (IllegalBlockSizeException e) {
             throw new ApplicationException(TOO_LONG_DATA_TO_BE_ENCRYPTED);
         } catch (InvalidKeyException | InvalidKeySpecException e) {
-            throw new ApplicationException(INVALID_RSA_PUBLIC_KEY);
+            throw new ApplicationException(INVALID_RSA_KEY);
         }
     }
 
@@ -46,7 +46,7 @@ public class CryptoUtil {
         } catch (IllegalBlockSizeException e) {
             throw new ApplicationException(TOO_LONG_DATA_TO_BE_DECRYPTED);
         } catch (InvalidKeyException | InvalidKeySpecException e) {
-            throw new ApplicationException(INVALID_RSA_PRIVATE_KEY);
+            throw new ApplicationException(INVALID_RSA_KEY);
         }
     }
 
