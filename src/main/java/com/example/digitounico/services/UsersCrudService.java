@@ -1,7 +1,6 @@
 package com.example.digitounico.services;
 
 import com.example.digitounico.entities.AppUser;
-import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.exceptions.ApplicationException;
 import com.example.digitounico.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,10 +48,14 @@ public class UsersCrudService {
         if (nonNull(fetchedUser)) {
             fetchedUser.setName(user.getName());
             fetchedUser.setEmail(user.getEmail());
-            appUserRepository.update(fetchedUser);
+            update(fetchedUser);
         } else {
-            create(fetchedUser);
+            create(user);
         }
+    }
+
+    public void update(AppUser user) {
+        appUserRepository.update(user);
     }
 
     public void delete(UUID uuid) {
