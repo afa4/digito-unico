@@ -30,10 +30,10 @@ public class UsersCrudServiceTest {
 
     @Test
     public void shouldThrowApplicationException_whenTriesToCreateAppUserWithAnAlreadyRegisteredEmail() {
-        when(appUserRepository.findByEmail(any())).thenReturn(mockAppUser("name", "email@Email.com"));
+        when(appUserRepository.findByEmail(any())).thenReturn(mockAppUser("Alice", "bob@Email.com"));
 
         try {
-            usersCrudService.create(null, new UserRequest("Bob", "email@Email.com"));
+            usersCrudService.create(mockAppUser("Bob", "bob@email.com"));
         } catch (ApplicationException ex) {
             Assertions.assertEquals("Email já cadastrado.", ex.getType().getMessage());
             Assertions.assertEquals(HttpStatus.CONFLICT, ex.getType().getReturnStatus());
@@ -44,14 +44,9 @@ public class UsersCrudServiceTest {
     public void shouldCreateAppUser_whenDoesntFindAnAlreadyRegisteredEmail() {
         when(appUserRepository.findByEmail(any())).thenReturn(null);
 
-        usersCrudService.create(null, new UserRequest("Bob", "bob@email.com"));
+        usersCrudService.create(mockAppUser("Bob", "bob@email.com"));
 
-        var expected = AppUser.builder()
-                .name("Bob")
-                .email("bob@email.com")
-                .build();
-
-        verify(appUserRepository).create(eq(expected));
+        verify(appUserRepository).create(any());
     }
 
     @Test

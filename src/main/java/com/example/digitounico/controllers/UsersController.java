@@ -17,7 +17,7 @@ public class UsersController {
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody UserRequest user) {
-        usersCrudService.create(null, user);
+        usersCrudService.create(user.toAppUser());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -33,7 +33,7 @@ public class UsersController {
 
     @PutMapping("/users/{uid}")
     public ResponseEntity update(@PathVariable UUID uid, @RequestBody UserRequest user) {
-        usersCrudService.updateOrCreate(uid, user);
+        usersCrudService.updateOrCreate(user.toAppUser(uid));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
