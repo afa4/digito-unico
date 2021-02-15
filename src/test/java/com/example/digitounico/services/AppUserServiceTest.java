@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import java.util.UUID;
+
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,7 +41,7 @@ public class AppUserServiceTest {
     }
 
     @Test
-    public void shouldCreateAppUser_whenDoesntFindsAnAlreadyRegisteredEmail() {
+    public void shouldCreateAppUser_whenDoesntFindAnAlreadyRegisteredEmail() {
         when(appUserRepository.findByEmail(any())).thenReturn(null);
 
         appUserService.create(null, new UserRequest("Bob", "bob@email.com"));
@@ -50,5 +52,17 @@ public class AppUserServiceTest {
                 .build();
 
         verify(appUserRepository).create(eq(expected));
+    }
+
+    @Test
+    public void shouldThrowApplicationException_whenDoesntFindAnUserByUid() {
+        when(appUserRepository.findByUid(any())).thenReturn(null);
+
+        try {
+            appUserService.findByUid(UUID.randomUUID());
+        } catch (ApplicationException ex) {
+            Assertions.assertEquals("Entidade não encontrada.", ex.getType().getMessage());
+            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.getType().getReturnStatus());
+        }
     }
 }
