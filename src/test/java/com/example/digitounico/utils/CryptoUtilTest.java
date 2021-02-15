@@ -1,0 +1,31 @@
+package com.example.digitounico.utils;
+
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class CryptoUtilTest {
+
+    private final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApBMBT/huVoCdgail4+819BwnJrespk1RWICoBGApk/GXeFU7sJWvN1kjum47CnvqwGmoNTyFaItvBfsswk7Rb35ZIY4lYjkhG4/RK8XsTPMxcHQMAGptYD67DFwJBcImDf9r1Vn69hy43mKxa2AEwn64s7DdgMAqp/aMMi5EAFEDsYmVckCTq8k+14ZAlDlPsNahCpWdm/A0qsAoomASw5J43of/G+lyXrKY5LvpJ8KsnP5CSrR/rPq5BA6Hs6mQbXIWyPm95o6EAGxGYxHsos0ysJ52STA6RTaY+KHb+OKysekuglAG5AmGIBws8svndZSApp+hf/2zwvsLWv3sYwIDAQAB";
+    private final String PRIVATE_KEY = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkEwFP+G5WgJ2BqKXj7zX0HCcmt6ymTVFYgKgEYCmT8Zd4VTuwla83WSO6bjsKe+rAaag1PIVoi28F+yzCTtFvflkhjiViOSEbj9ErxexM8zFwdAwAam1gPrsMXAkFwiYN/2vVWfr2HLjeYrFrYATCfrizsN2AwCqn9owyLkQAUQOxiZVyQJOryT7XhkCUOU+w1qEKlZ2b8DSqwCiiYBLDknjeh/8b6XJespjku+knwqyc/kJKtH+s+rkEDoezqZBtchbI+b3mjoQAbEZjEeyizTKwnnZJMDpFNpj4odv44rKx6S6CUAbkCYYgHCzyy+d1lICmn6F//bPC+wta/exjAgMBAAECggEAFxCo5ZIaCMUJ31lTAMj2/7sZceLuPW6vGc70T7EpByg2T+9Ddd6FBDXexO2MFTw4UxZHVDyO0JSRZfjaYPJtlMvhQctWzAkV82bzU8D+KA8kCxf1O/W6LIaFCwbBKfMSIHOguBxvIDwHbRPYtyyHXsQruO8LJHdfR79sE/3XB2giX6475q/GMXbyi3SsuLQCjUKPvHNGtgdzL84492VY0CDXXPy7/55tbyZ+wTVnXGUgog6lMx+dwPVg195RBCSsVoTr/GjowbJtihNGTZS026Dzk7/furjOtTTlq08Bu7huijr+g0/JB5Uy37rhajxKmLSWQkR0epbfk17Yv0I16QKBgQDdKM3muCcCmsz076nNFWCKQIsIVGLXH/mm+l89w9qAKHJtJE5xjBM9rwFdMXppMfW1C77WjGVIN1IOh2QPFKbopdBPlSXbJDF/Ri3on5cCmewQlnUCQFsKtbDNnfjzau+cJB1DJsdIJxrD5OCtE86WT6aCmDiMjtg4b5gd4ig3vQKBgQC96/+iB9Qhd8PaeCbqN9TDSqQZAM489XFPRc4Dzfra5OGKImw1cKXpLGbLgViogbi1rf/WZUkbYQJzYPxctdwaCKx2RyuTjMkE75Ja9g1Ices97NQ+3JvnuzbpOCE5ZNkn390unvbpDBAsb0GUrh7jXM20gjLEKhmAQ9eEkuZmnwKBgQC0InwzJGOB15yBFIR1qqfLc+7KhhFLr5ukyeGxaUkbgdZR13SdP76cS2MNCTPvYuYC5OI31nrYa1bGxrhVIDki3YvihlUjPUOjqwHRq8tQLxb8G9CKWOjOvFaZ48XWXo9z2maLP5apylAeptnpn2xxOcciL+I/eknbDeoUzRR88QKBgFHdHQZhq311m1VbPyLsR+iaDtu8Lim2fk32P9QCAGREDje1mMD8OnekrPaBXY7cw5qEUue+JuIHUcAcCQuJVENgg75D9TOXlrpq7cIJlzYn7Id3wxEJlKYxW3zxtdiAcN4wL6291Z4klgAhQLpux1+ni/+Hs4w8vVs9YvOBQpDvAoGAZ+cBLoUpQFn2+E+E+kNw8XbLawEMenE8gUeZXfTWJ/W/TwjkhwZTCeNIfHwiWY4P+HIcKtt8liVGXInsr+ELe6xmfc0Tnn4OLjfd803668d7VfmBXTgXNY1ip2IKnYe+UBPsq3EemIsLMEn2NEAwZ/qiCec5DrnZxSw0wXoix3U=";
+
+    @Test
+    public void shouldEncryptDataBas64Encoded_whenReceivesARSAPublicKey() {
+        var data = "Single Digit Application!";
+
+        var result = CryptoUtil.encrypt(data, PUBLIC_KEY);
+
+        assertTrue(Base64.isBase64(result));
+    }
+
+    @Test
+    public void shouldDecryptDataWithABas64EncodedPrivateKey_whenReceivesARSAPublicKey() {
+        var data = "TQ4ciNCWAoLOBk/rkslKl4pf7f/QRPYhg9fuEZ/mQI04BMtZ6+qUCyz6NBFKMesSS9y5FjIdU+FGn6A2Qv4UMP1Zyxoo5MMrjDIHIlKymDqySxkGX7bCqSbgHCf+oJWg3sFw8jxiB1diSvVcS+DcUcteLvAW4vZHcILsnUIDRQubO1x3SoCfxIpRdYhOeZBAiEWSY2b4cnuA2t8xO6DimKtdW3f7KjuL3eH5oL7+EIrhmQDQvygW+p9y1nXeO1VWQt3NLiDRXGXBi0F0VZZ0zRkOWymmx2kXnci0IOrIS9moZkYWFsOvPnxQToOnLBrYmw6EknYj/ZVDzBuXn0EbNA==";
+
+        var result = CryptoUtil.decrypt(data, PRIVATE_KEY);
+
+        assertEquals("Single Digit Application!", result);
+    }
+}
