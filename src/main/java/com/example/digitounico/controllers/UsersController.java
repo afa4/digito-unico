@@ -1,7 +1,9 @@
 package com.example.digitounico.controllers;
 
+import com.example.digitounico.entities.dto.KeyRequest;
 import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.services.UsersCrudService;
+import com.example.digitounico.services.UsersCryptoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class UsersController {
 
     private final UsersCrudService usersCrudService;
+    private final UsersCryptoService usersCryptoService;
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody UserRequest user) {
@@ -44,13 +47,15 @@ public class UsersController {
     }
 
     @PostMapping("/users/{uid}/encrypt")
-    public ResponseEntity encrypt(@PathVariable UUID uid) {
-        return null;
+    public ResponseEntity encrypt(@PathVariable UUID uid, @RequestBody KeyRequest key) {
+        var user = usersCryptoService.encrypt(uid, key.getBase64EncodedKey());
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/users/{uid}/decrypt")
-    public ResponseEntity decrypt(@PathVariable UUID uid) {
-        return null;
+    public ResponseEntity decrypt(@PathVariable UUID uid, @RequestBody KeyRequest key) {
+        var user = usersCryptoService.decrypt(uid, key.getBase64EncodedKey());
+        return ResponseEntity.ok(user);
     }
 
 }
