@@ -15,10 +15,10 @@ import org.springframework.http.HttpStatus;
 import java.util.UUID;
 
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUser;
+import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUserList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AppUserServiceTest {
@@ -64,5 +64,25 @@ public class AppUserServiceTest {
             Assertions.assertEquals("Entidade não encontrada.", ex.getType().getMessage());
             Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.getType().getReturnStatus());
         }
+    }
+
+    @Test
+    public void shouldCallRepositoryFindAllMethod_whenFetchesAllUsers() {
+        when(appUserRepository.findAll()).thenReturn(mockAppUserList(3));
+
+        appUserService.findAll();
+
+        verify(appUserRepository).findAll();
+    }
+
+    @Test
+    public void shouldCallRepositoryDeleteMethod_whenTriesToDeleteUser() {
+        doNothing().when(appUserRepository).delete(any());
+
+        var randomUUID = UUID.randomUUID();
+
+        appUserService.delete(randomUUID);
+
+        verify(appUserRepository).delete(randomUUID);
     }
 }
