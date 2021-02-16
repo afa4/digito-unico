@@ -17,6 +17,7 @@ import static java.util.Objects.nonNull;
 @Repository
 @RequiredArgsConstructor
 public class AppUserRepository {
+
     private final AppUserMapper appUserMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
