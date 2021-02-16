@@ -1,5 +1,6 @@
 package com.example.digitounico.controllers;
 
+import com.example.digitounico.controllers.docs.UsersApi;
 import com.example.digitounico.entities.dto.KeyRequest;
 import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.services.UsersCrudService;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-public class UsersController {
+public class UsersController implements UsersApi {
 
     private final UsersCrudService usersCrudService;
     private final UsersCryptoService usersCryptoService;
