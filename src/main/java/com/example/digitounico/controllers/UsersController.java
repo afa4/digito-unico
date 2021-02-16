@@ -2,6 +2,7 @@ package com.example.digitounico.controllers;
 
 import com.example.digitounico.controllers.docs.UsersApi;
 import com.example.digitounico.entities.dto.KeyRequest;
+import com.example.digitounico.entities.dto.SingleDigitRequest;
 import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.services.UsersCrudService;
 import com.example.digitounico.services.UsersCryptoService;
@@ -57,5 +58,10 @@ public class UsersController implements UsersApi {
     public ResponseEntity decrypt(@PathVariable UUID uid, @RequestBody KeyRequest key) {
         var user = usersCryptoService.decrypt(uid, key.getBase64EncodedKey());
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/users/{uid}/single-digits")
+    public ResponseEntity createSingleDigitCalculation(@RequestBody SingleDigitRequest singleDigitRequest) {
+        return ResponseEntity.ok().build();
     }
 }

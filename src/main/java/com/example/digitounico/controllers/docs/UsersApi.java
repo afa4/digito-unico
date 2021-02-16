@@ -2,6 +2,8 @@ package com.example.digitounico.controllers.docs;
 
 import com.example.digitounico.entities.AppUser;
 import com.example.digitounico.entities.dto.KeyRequest;
+import com.example.digitounico.entities.dto.SingleDigitRequest;
+import com.example.digitounico.entities.dto.SingleDigitResponse;
 import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.exceptions.ApplicationExceptionMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
@@ -148,4 +151,25 @@ public interface UsersApi {
             )
     })
     ResponseEntity decrypt(UUID uid, KeyRequest key);
+
+    @Operation(summary = "Creates a single digit calculation result for a user.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Single digit was calculated and stored.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = SingleDigitResponse.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApplicationExceptionMessage.class)
+                    )}
+            )
+    })
+    ResponseEntity createSingleDigitCalculation(SingleDigitRequest singleDigitRequest);
 }
