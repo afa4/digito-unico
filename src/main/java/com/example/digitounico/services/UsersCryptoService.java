@@ -19,9 +19,7 @@ public class UsersCryptoService {
         user.setName(CryptoUtil.encrypt(user.getName(), base64EncodedPublicKey));
         user.setEmail(CryptoUtil.encrypt(user.getEmail(), base64EncodedPublicKey));
 
-        usersCrudService.update(user);
-
-        return user;
+        return usersCrudService.update(user);
     }
 
     public AppUser decrypt(UUID userUid,String base64EncodedPrivateKey) {
@@ -30,8 +28,6 @@ public class UsersCryptoService {
         user.setName(CryptoUtil.decrypt(user.getName(), base64EncodedPrivateKey));
         user.setEmail(CryptoUtil.decrypt(user.getEmail(), base64EncodedPrivateKey));
 
-        usersCrudService.update(user);
-
-        return user;
+        return usersCrudService.update(user);
     }
 }

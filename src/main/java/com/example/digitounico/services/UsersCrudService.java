@@ -20,13 +20,15 @@ public class UsersCrudService {
 
     private final AppUserRepository appUserRepository;
 
-    public void create(AppUser appUser) {
+    public AppUser create(AppUser appUser) {
         var fetchedUser = appUserRepository.findByEmail(appUser.getEmail());
 
         if (nonNull(fetchedUser))
             throw new ApplicationException(EMAIL_ALREADY_USED);
 
         appUserRepository.create(appUser);
+
+        return appUserRepository.findByEmail(appUser.getEmail());
     }
 
     public List<AppUser> findAll() {
@@ -42,20 +44,21 @@ public class UsersCrudService {
         return fetchedUser;
     }
 
-    public void updateOrCreate(AppUser user) {
+    public AppUser updateOrCreate(AppUser user) {
         var fetchedUser = appUserRepository.findByUid(user.getUid());
 
         if (nonNull(fetchedUser)) {
             fetchedUser.setName(user.getName());
             fetchedUser.setEmail(user.getEmail());
-            update(fetchedUser);
+            return update(fetchedUser);
         } else {
-            create(user);
+            return create(user);
         }
     }
 
-    public void update(AppUser user) {
+    public AppUser update(AppUser user) {
         appUserRepository.update(user);
+        return user;
     }
 
     public void delete(UUID uuid) {

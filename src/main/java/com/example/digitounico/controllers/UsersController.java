@@ -21,8 +21,8 @@ public class UsersController implements UsersApi {
 
     @PostMapping("/users")
     public ResponseEntity create(@RequestBody UserRequest user) {
-        usersCrudService.create(user.toAppUser());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        var createdUser = usersCrudService.create(user.toAppUser());
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping("/users")
@@ -37,8 +37,8 @@ public class UsersController implements UsersApi {
 
     @PutMapping("/users/{uid}")
     public ResponseEntity update(@PathVariable UUID uid, @RequestBody UserRequest user) {
-        usersCrudService.updateOrCreate(user.toAppUser(uid));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        var createdOrUpdatedUser = usersCrudService.updateOrCreate(user.toAppUser(uid));
+        return ResponseEntity.status(HttpStatus.OK).body(createdOrUpdatedUser);
     }
 
     @DeleteMapping("/users/{uid}")
