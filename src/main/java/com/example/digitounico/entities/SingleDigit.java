@@ -8,5 +8,5 @@ import lombok.Data;
 public class SingleDigit {
     private String integer;
     private Integer repeatTimes;
-    private String singleDigit;
+    private Integer singleDigit;
 }
