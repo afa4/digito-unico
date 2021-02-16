@@ -34,7 +34,7 @@ public interface UsersApi {
     })
     ResponseEntity create(UserRequest user);
 
-    @Operation(summary = "Recovers a list of registered users.")
+    @Operation(summary = "Returns a list of registered users.")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -47,7 +47,7 @@ public interface UsersApi {
     })
     ResponseEntity getAll();
 
-    @Operation(summary = "Recovers a user by its uid (universal id).")
+    @Operation(summary = "Returns a user by its uid (universal id).")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -68,7 +68,7 @@ public interface UsersApi {
     })
     ResponseEntity getByUid(UUID uid);
 
-    @Operation(summary = "Updates users name and email. If the user could not be found by its uid, a new user is created.")
+    @Operation(summary = "Finds a user by its uid (universal id) and updates its name and email. If the user could not be found, a new user is created.")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -93,7 +93,7 @@ public interface UsersApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "User was deleted",
+                    description = "User was deleted.",
                     content = @Content
             ),
             @ApiResponse(
@@ -107,7 +107,45 @@ public interface UsersApi {
     })
     ResponseEntity deleteByUid(UUID uid);
 
+    @Operation(summary = "Finds an User by its uid (universal id) and encrypts its name and email with a public, base 64 encoded, RSA key.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User data was encrypted.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AppUser.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApplicationExceptionMessage.class)
+                    )}
+            )
+    })
     ResponseEntity encrypt(UUID uid, KeyRequest key);
 
+    @Operation(summary = "Finds an User by its uid (universal id) and decrypts its name and email with a private, base 64 encoded, RSA key.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User data was encrypted.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AppUser.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApplicationExceptionMessage.class)
+                    )}
+            )
+    })
     ResponseEntity decrypt(UUID uid, KeyRequest key);
 }
