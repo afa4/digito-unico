@@ -25,7 +25,7 @@ public interface UsersApi {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Requested user email is already registered",
+                    description = "Requested user email is already registered.",
                     content = {@Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApplicationExceptionMessage.class)
@@ -47,7 +47,7 @@ public interface UsersApi {
     })
     ResponseEntity getAll();
 
-    @Operation(summary = "Recovers a user by its universal id (UUID uid).")
+    @Operation(summary = "Recovers a user by its uid (universal id).")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -68,8 +68,43 @@ public interface UsersApi {
     })
     ResponseEntity getByUid(UUID uid);
 
+    @Operation(summary = "Updates users name and email. If the user could not be found by its uid, a new user is created.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User was updated or created.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AppUser.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Requested user email is already registered.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApplicationExceptionMessage.class)
+                    )}
+            )
+    })
     ResponseEntity update(UUID uid, UserRequest user);
 
+    @Operation(summary = "Deletes a user by its uid (universal id).")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User was deleted",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApplicationExceptionMessage.class)
+                    )}
+            )
+    })
     ResponseEntity deleteByUid(UUID uid);
 
     ResponseEntity encrypt(UUID uid, KeyRequest key);
