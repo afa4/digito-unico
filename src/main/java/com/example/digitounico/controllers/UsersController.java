@@ -58,5 +58,4 @@ public class UsersController implements UsersApi {
         var user = usersCryptoService.decrypt(uid, key.getBase64EncodedKey());
         return ResponseEntity.ok(user);
     }
-
 }
