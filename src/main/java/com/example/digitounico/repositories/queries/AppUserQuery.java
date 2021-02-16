@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum AppUserQuery {
     INSERT("insert.sql"),
+    INSERT_SINGLE_DIGIT("insert-single-digit.sql"),
     UPDATE("update-by-uid.sql"),
     SELECT_ALL("select-all.sql"),
     SELECT_BY_UID("select-by-uid.sql"),

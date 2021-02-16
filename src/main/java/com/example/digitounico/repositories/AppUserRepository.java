@@ -1,6 +1,7 @@
 package com.example.digitounico.repositories;
 
 import com.example.digitounico.entities.AppUser;
+import com.example.digitounico.entities.SingleDigit;
 import com.example.digitounico.repositories.mappers.AppUserMapper;
 import com.example.digitounico.repositories.queries.AppUserQuery;
 import lombok.RequiredArgsConstructor;
@@ -73,5 +74,15 @@ public class AppUserRepository {
                 "uid", uid
         );
         namedParameterJdbcTemplate.update(AppUserQuery.DELETE.getQuery(), params);
+    }
+
+    public void insertSingleDigit(Long userId, SingleDigit singleDigit) {
+        var params = Map.of(
+                "appUserId", userId,
+                "integer", singleDigit.getInteger(),
+                "repeatTimes", singleDigit.getRepeatTimes(),
+                "singleDigit", singleDigit.getSingleDigit()
+        );
+        namedParameterJdbcTemplate.update(AppUserQuery.INSERT_SINGLE_DIGIT.getQuery(), params);
     }
 }
