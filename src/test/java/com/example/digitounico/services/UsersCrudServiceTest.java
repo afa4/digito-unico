@@ -72,6 +72,7 @@ public class UsersCrudServiceTest {
 
     @Test
     public void shouldCallRepositoryDeleteMethod_whenTriesToDeleteUser() {
+        when(appUserRepository.findByUid(any())).thenReturn(mockAppUser());
         doNothing().when(appUserRepository).delete(any());
 
         var randomUUID = UUID.randomUUID();
