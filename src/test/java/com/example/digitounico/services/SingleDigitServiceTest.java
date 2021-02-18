@@ -9,8 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SingleDigitServiceTest {
@@ -24,6 +23,15 @@ public class SingleDigitServiceTest {
     @Test
     public void shouldThrowException_whenStringHasANonDigitChar() {
         assertThrows(RuntimeException.class, () -> singleDigitService.getSingleDigit("sasa7s4as", 1));
+    }
+
+    @Test
+    public void shouldCheckCacheServiceBeforeCalculateSingleDigit() {
+        when(cache.get(anyString())).thenReturn(null);
+
+        singleDigitService.getSingleDigit("9875", 1);
+
+        verify(cache).get(eq("9875"));
     }
 
     @Test
