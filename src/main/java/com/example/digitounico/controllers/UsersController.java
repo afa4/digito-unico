@@ -61,7 +61,8 @@ public class UsersController implements UsersApi {
     }
 
     @PostMapping("/users/{uid}/single-digits")
-    public ResponseEntity createSingleDigitCalculation(@RequestBody SingleDigitRequest singleDigitRequest) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity createSingleDigitCalculation(@PathVariable UUID uid, @RequestBody SingleDigitRequest singleDigitRequest) {
+        var user = usersCrudService.insertSingleDigit(uid, singleDigitRequest);
+        return ResponseEntity.ok(user);
     }
 }

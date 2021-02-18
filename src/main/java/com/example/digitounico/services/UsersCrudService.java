@@ -1,7 +1,7 @@
 package com.example.digitounico.services;
 
 import com.example.digitounico.entities.AppUser;
-import com.example.digitounico.entities.SingleDigit;
+import com.example.digitounico.entities.dto.SingleDigitRequest;
 import com.example.digitounico.exceptions.ApplicationException;
 import com.example.digitounico.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,13 +67,17 @@ public class UsersCrudService {
         appUserRepository.delete(uid);
     }
 
-    public void insertSingleDigit(UUID uid, SingleDigit singleDigitRequest) {
+    public AppUser insertSingleDigit(UUID uid, SingleDigitRequest singleDigitRequest) {
         var user = findByUid(uid);
-        var singleDigit = singleDigitService.getSingleDigit(singleDigitRequest.getInteger(),
+
+        var singleDigitCalculation = singleDigitService.getSingleDigit(singleDigitRequest.getInteger(),
                 singleDigitRequest.getRepeatTimes());
 
-        singleDigitRequest.setSingleDigit(singleDigit);
+        var singleDigitEntity = singleDigitRequest.toSingleDigit(user.getId(), singleDigitCalculation);
 
-        appUserRepository.insertSingleDigit(user.getId(), singleDigitRequest);
+        appUserRepository.insertSingleDigit(singleDigitEntity);
+
+        user.getSingleDigits().add(singleDigitEntity);
+        return user;
     }
 }

@@ -95,9 +95,9 @@ public class AppUserRepository {
         namedParameterJdbcTemplate.update(AppUserQuery.DELETE.getQuery(), params);
     }
 
-    public void insertSingleDigit(Long userId, SingleDigit singleDigit) {
+    public void insertSingleDigit(SingleDigit singleDigit) {
         var params = Map.of(
-                "appUserId", userId,
+                "appUserId", singleDigit.getAppUserId(),
                 "integer", singleDigit.getInteger(),
                 "repeatTimes", singleDigit.getRepeatTimes(),
                 "singleDigit", singleDigit.getSingleDigit()
