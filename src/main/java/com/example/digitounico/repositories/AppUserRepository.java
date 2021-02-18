@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class AppUserRepository {
 
     private final AppUserMapper appUserMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final SingleDigitRepository singleDigitRepository;
 
     public void create(AppUser appUser) {
         var params = Map.of(
@@ -32,20 +34,37 @@ public class AppUserRepository {
     }
 
     public List<AppUser> findAll() {
-        return namedParameterJdbcTemplate.query(
+        var users = namedParameterJdbcTemplate.query(
                 AppUserQuery.SELECT_ALL.getQuery(), Map.of(), appUserMapper);
+
+        var singleDigitsMappedByUserId = singleDigitRepository.findAllMappedByAppUserId();
+
+        users.forEach(user -> {
+            var singleDigits = singleDigitsMappedByUserId.get(user.getId());
+            user.setSingleDigits(nonNull(singleDigits) ? singleDigits : Collections.emptyList());
+        });
+
+        return users;
     }
 
     public AppUser findByUid(UUID uid) {
         var params = Map.of(
                 "uid", uid
         );
+
         try {
-            return namedParameterJdbcTemplate.queryForObject(
+            var user = namedParameterJdbcTemplate.queryForObject(
                     AppUserQuery.SELECT_BY_UID.getQuery(), params, appUserMapper);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
+
+            if (nonNull(user)) {
+                var singleDigits = singleDigitRepository.findByAppUserId(user.getId());
+                user.setSingleDigits(nonNull(singleDigits) ? singleDigits : Collections.emptyList());
+                return user;
+            }
+        } catch (EmptyResultDataAccessException ignored) {
         }
+
+        return null;
     }
 
     public AppUser findByEmail(String email) {
