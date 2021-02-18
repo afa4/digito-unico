@@ -41,9 +41,11 @@ public class CryptoUtil {
 
             var base64EncodedData = Base64.getDecoder().decode(data.getBytes());
             return new String(cipher.doFinal(base64EncodedData));
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException e) {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
             throw new ApplicationException(INTERNAL_ERROR);
-        } catch (IllegalBlockSizeException e) {
+        } catch(BadPaddingException e){
+            throw new ApplicationException(DECRYPTION_ERROR);
+        }catch (IllegalBlockSizeException e) {
             throw new ApplicationException(TOO_LONG_DATA_TO_BE_DECRYPTED);
         } catch (InvalidKeyException | InvalidKeySpecException e) {
             throw new ApplicationException(INVALID_RSA_KEY);
