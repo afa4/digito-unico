@@ -11,8 +11,10 @@ public class SingleDigitService {
 
     private final CacheService cache;
 
+    private final String DIGITS = "[0-9]*";
+
     public int getSingleDigit(String number, int repeatTimes) {
-        if (number.matches("[0-9]*")) {
+        if (number.matches(DIGITS)) {
             var inputNumber = repeatTimes <= 0 ? number : number.repeat(repeatTimes);
 
             var resultFromMemory = cache.get(inputNumber);
@@ -29,11 +31,9 @@ public class SingleDigitService {
 
     private int getSingleDigit(String number) {
         while (number.length() > 1) {
-            int sum = 0;
-            for (char digit : number.toCharArray()) {
-                sum += Character.getNumericValue(digit);
-            }
-            number = Integer.toString(sum);
+            number = Integer.toString(
+                    number.chars().map(Character::getNumericValue).sum()
+            );
         }
         return Integer.parseInt(number);
     }
