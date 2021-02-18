@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "b5b67cb9-9eac-44ab-b117-f23eefd88062",
+		"name": "Digito Unico",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CRUD",
+			"item": [
+				{
+					"name": "list-users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Arthur Frade de Araújo\",\r\n    \"email\": \"arthur4raujo@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user-by-uid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/b5e595a9-50e0-4a11-a19a-2716016525d8",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"b5e595a9-50e0-4a11-a19a-2716016525d8"
+							]
+						},
+						"description": "Nesse Exemplo de requisição o usuário a ser excluído é a Alice! :)"
+					},
+					"response": []
+				},
+				{
+					"name": "update-user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alice the first\",\r\n    \"email\": \"alice_the_first@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae"
+							]
+						},
+						"description": "Nesse exemplo de requisição o usuário a ser alterado é o Bob :)"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "CRYPTO",
+			"item": [
+				{
+					"name": "encrypt-user-data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"base64EncodedKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs3PG3Wa/fba9XR/hPOJbGTsuY4iuZaq+a5ylpBZwF+1Q6dGFH8a1bNTlv1g7B9iXM6iCHBbGf1nyi/jQzquf1nnJLdZpiLBGgEswbVbuE4F/rvX46tvgckpkNvwBXvTL4lL33bbyLvy+npQxjzJ/OYd9+M8C2ZWN3fotoCLTNwHFh9Ro0XzfbhGMYoqgS+vWsXmqItKkZ+0vLeilEJDiB6vC2aAUiSrYkypQ788Rl8D1uQz479t1QFF5LDw7cC6UjBVrX33Yy30t6M4dq93RW8Xr8XNDj65BVDYVoHoZTfiRin6gCAKzsGyJWWpCh1f6UjQYmAtmfJGz4jxDAShDWwIDAQAB\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/d22649a1-72ec-4641-ba63-d72fcfeb950d/encrypt",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"d22649a1-72ec-4641-ba63-d72fcfeb950d",
+								"encrypt"
+							]
+						},
+						"description": "Nesse exemplo de requisição o usuário a ser encriptado é o Charlie :)"
+					},
+					"response": []
+				},
+				{
+					"name": "decrypt-user-data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"base64EncodedKey\": \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCzc8bdZr99tr1dH+E84lsZOy5jiK5lqr5rnKWkFnAX7VDp0YUfxrVs1OW/WDsH2JczqIIcFsZ/WfKL+NDOq5/Weckt1mmIsEaASzBtVu4TgX+u9fjq2+BySmQ2/AFe9MviUvfdtvIu/L6elDGPMn85h334zwLZlY3d+i2gItM3AcWH1GjRfN9uEYxiiqBL69axeaoi0qRn7S8t6KUQkOIHq8LZoBSJKtiTKlDvzxGXwPW5DPjv23VAUXksPDtwLpSMFWtffdjLfS3ozh2r3dFbxevxc0OPrkFUNhWgehlN+JGKfqAIArOwbIlZakKHV/pSNBiYC2Z8kbPiPEMBKENbAgMBAAECggEARQvG+GkQRM6LDcm2YDa31n1u2907POL1YXJkST5Y4tvsxgpXrmJGbBl+TKEmFV7Azp+HcEdTGK0DJdgWf26JkXxKa9iTwoQQnExR1cAc2mR5PFhn7fWr5k25QW61GFQYHnzN4gECLhIRRfK/HtnPGdOIJLOB5TYl38LiyzqbCg59TNVjxsCDqoSLk7VF4jUvJiwpGSWgyMY2jlphZEI4w31WWWFnGyR+vLeC6+ut6115BuJq4V6pXXl637r3QfgWkTIXNJm7SMnuZaVTmnNp2/aZwebXAoxA+99S1SSZU2zv0H9OwRzeKoYXRd7TA1eHYd01/ntzd2AhMkA/wT0YAQKBgQD8ZUMNuZADsK0ov6euw8h4bvv7em9WLO3mG+VzFy0TU3yzDBEf9SlOKj5aJr70f/TBxxKs5o/rJ2mWW5Tk2Wc5pwj85OpwDtHPeQEtFsmGm5UivqqQ9pRxa8jInV+klnUDTLRBlFTWWFpnsn+gzfxuKtwGZPbH0yzlhOt9Md/m+QKBgQC2A9cI8JJwGEXzojpmP2qqAJbeCQzzcdRosvpDh/j0VMWKX9XF1NzkYyxK5IdnlG7rdExPPyCMFfP75jLM37gpa3VHwEBnvJ3QTxztVfuO0Wd4DmRiQlOai9XCu7ffWy+0mjnO2ovCoR/CBJSc1DcNhS+La8GYTEf3wvxyoIht8wKBgQDVQn6Qxzz/UTZOmvoFOhpWYHh7eW0/pEDzUJjkUS3eCYnxA34owY7AJAOBSwHIN6HIZfvKqhnquOeHiyRY5bVJynBWttm8C1mOc5Dh10I6gZVWwUH/sMmmuErz771TpWmDezlHvBye7BKfUfxzE/l54K7+nCrElxN1b4VGyHCGiQKBgDJEHzet0JM6cN8W10/zhY6LeR66myQENKfxfaH2xC8d1iwfyVbIMXS1Wr8YG7jkSjmmNYjRIzjsuyO+8BqaUi7GKW52TpMXiPHFV3TIAR/w/sUuHFTygko1AgS0eNQrR6J10S8qNdy7SJz5TN1+0fFe7cFwMdfQgTOQWs2BPgw3AoGATS8uR9Pn4sWfK1UJ5U2b5sOl93ZKIjWn6vIkHs+Qpj7x/TdaFE13cCc6BnQ5xMehbbjz9NtVTyfcvoAKHSb4Kx/WnJbJJOWnIsmjZQptTMuFO2PBeVHA1Y6OncFJI78JO3pepETresQJ2C0nVj7dLtNTjdybFnYnQ/DkJoRqdUk=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/d22649a1-72ec-4641-ba63-d72fcfeb950d/decrypt",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"d22649a1-72ec-4641-ba63-d72fcfeb950d",
+								"decrypt"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "SINGLE DIGIT",
+			"item": [
+				{
+					"name": "add-single-digit-calculation-to-user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"integer\": \"6616164646\",\r\n    \"repeatTimes\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae/single-digits",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"e1ef1d0d-2eb4-4e42-a097-23c4dbda38ae",
+								"single-digits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "calculate-single-digit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/single-digits?integer=9875&repeat-times=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "integer",
+									"value": "9875"
+								},
+								{
+									"key": "repeat-times",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
