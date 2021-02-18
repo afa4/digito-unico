@@ -1,7 +1,5 @@
 package com.example.digitounico.services;
 
-import com.example.digitounico.entities.AppUser;
-import com.example.digitounico.entities.dto.UserRequest;
 import com.example.digitounico.exceptions.ApplicationException;
 import com.example.digitounico.repositories.AppUserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +15,6 @@ import java.util.UUID;
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUser;
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUserList;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
