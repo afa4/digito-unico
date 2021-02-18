@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /users/{uid}:
+    get:
+      tags:
+      - users-controller
+      summary: Returns a user by its uid (universal id).
+      operationId: getByUid
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Returns the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUser'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+    put:
+      tags:
+      - users-controller
+      summary: "Finds a user by its uid (universal id) and updates its name and email.\
+        \ If the user could not be found, a new user is created."
+      operationId: update
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "400":
+          description: Requested user email is already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+        "200":
+          description: User was updated or created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUser'
+    delete:
+      tags:
+      - users-controller
+      summary: Deletes a user by its uid (universal id).
+      operationId: deleteByUid
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+        "200":
+          description: User was deleted.
+  /users:
+    get:
+      tags:
+      - users-controller
+      summary: Returns a list of registered users.
+      operationId: getAll
+      responses:
+        "200":
+          description: Returns the list of registered users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppUser'
+    post:
+      tags:
+      - users-controller
+      summary: Creates an application user with name and email.
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "400":
+          description: Requested user email is already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+        "201":
+          description: User was created.
+  /users/{uid}/single-digits:
+    post:
+      tags:
+      - users-controller
+      summary: Creates a single digit calculation result for a user.
+      operationId: createSingleDigitCalculation
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SingleDigitRequest'
+        required: true
+      responses:
+        "201":
+          description: Single digit was calculated and stored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleDigitResponse'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+  /users/{uid}/encrypt:
+    post:
+      tags:
+      - users-controller
+      summary: "Finds an User by its uid (universal id) and encrypts its name and\
+        \ email with a public, base 64 encoded, RSA key."
+      operationId: encrypt
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyRequest'
+        required: true
+      responses:
+        "200":
+          description: User data was encrypted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUser'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+  /users/{uid}/decrypt:
+    post:
+      tags:
+      - users-controller
+      summary: "Finds an User by its uid (universal id) and decrypts its name and\
+        \ email with a private, base 64 encoded, RSA key."
+      operationId: decrypt
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyRequest'
+        required: true
+      responses:
+        "200":
+          description: User data was encrypted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUser'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationExceptionMessage'
+  /single-digits:
+    get:
+      tags:
+      - single-digit-controller
+      operationId: create_1
+      parameters:
+      - name: integer
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: repeat-times
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    UserRequest:
+      required:
+      - email
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    ApplicationExceptionMessage:
+      type: object
+      properties:
+        mensagem:
+          type: string
+    AppUser:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        singleDigits:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleDigit'
+    SingleDigit:
+      type: object
+      properties:
+        integer:
+          type: string
+        repeatTimes:
+          type: integer
+          format: int32
+        singleDigit:
+          type: integer
+          format: int32
+    SingleDigitRequest:
+      type: object
+      properties:
+        integer:
+          type: string
+        repeatTimes:
+          type: integer
+          format: int32
+    SingleDigitResponse:
+      type: object
+      properties:
+        singleDigit:
+          type: integer
+          format: int32
+    KeyRequest:
+      type: object
+      properties:
+        base64EncodedKey:
+          type: string
