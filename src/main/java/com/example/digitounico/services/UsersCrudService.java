@@ -64,6 +64,7 @@ public class UsersCrudService {
     }
 
     public void delete(UUID uid) {
+        findByUid(uid);
         appUserRepository.delete(uid);
     }
 

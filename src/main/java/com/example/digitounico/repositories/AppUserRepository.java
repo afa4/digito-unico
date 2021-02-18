@@ -2,6 +2,8 @@ package com.example.digitounico.repositories;
 
 import com.example.digitounico.entities.AppUser;
 import com.example.digitounico.entities.SingleDigit;
+import com.example.digitounico.exceptions.ApplicationException;
+import com.example.digitounico.exceptions.ApplicationExceptionType;
 import com.example.digitounico.repositories.mappers.AppUserMapper;
 import com.example.digitounico.repositories.queries.AppUserQuery;
 import lombok.RequiredArgsConstructor;
@@ -56,11 +58,7 @@ public class AppUserRepository {
             var user = namedParameterJdbcTemplate.queryForObject(
                     AppUserQuery.SELECT_BY_UID.getQuery(), params, appUserMapper);
 
-            if (nonNull(user)) {
-                var singleDigits = singleDigitRepository.findByAppUserId(user.getId());
-                user.setSingleDigits(nonNull(singleDigits) ? singleDigits : Collections.emptyList());
-                return user;
-            }
+            return includeSingleDigits(user);
         } catch (EmptyResultDataAccessException ignored) {
         }
 
@@ -72,8 +70,9 @@ public class AppUserRepository {
                 "email", email
         );
         try {
-            return namedParameterJdbcTemplate.queryForObject(
+            var user = namedParameterJdbcTemplate.queryForObject(
                     AppUserQuery.SELECT_BY_EMAIL.getQuery(), params, appUserMapper);
+            return includeSingleDigits(user);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -103,5 +102,14 @@ public class AppUserRepository {
                 "singleDigit", singleDigit.getSingleDigit()
         );
         namedParameterJdbcTemplate.update(AppUserQuery.INSERT_SINGLE_DIGIT.getQuery(), params);
+    }
+
+    private AppUser includeSingleDigits(AppUser user) {
+        if (nonNull(user)) {
+            var singleDigits = singleDigitRepository.findByAppUserId(user.getId());
+            user.setSingleDigits(nonNull(singleDigits) ? singleDigits : Collections.emptyList());
+            return user;
+        }
+        throw new ApplicationException(ApplicationExceptionType.INTERNAL_ERROR);
     }
 }
