@@ -21,6 +21,18 @@ repositório (`cd digito-unico/`).
 
     - `./mvnw package`
 
+### Documentação da api :pencil2:
+
+A aplicação disponibiliza a documentação da api no recurso `/swagger-ui.html`
+
+Lá encontram-se as descrições de todos os endpoints da API
+
+Também é possível gerar a documentação open-api versão 3.0 através dos recursos
+
+`/v3/api-docs` em formato json .json
+
+`/v3/api-docs.yaml` em formato .yaml
+
 ### Sobre o cálculo do 'Digito Único' :bulb:
 
 API que disponibiliza cálculo do dígito único a partir de uma representação de inteiro em formato String.
