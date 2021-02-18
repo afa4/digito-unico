@@ -2,6 +2,8 @@
 
 A API Dígito Único disponibiliza recursos para cadastro e criptografia de informações de usuários, endpoit para cálculo avulso do dígito único de um inteiro e enpoint para registro de cálculo de dígito único para um usuário.
 
+`JAVA 11` `MAVEN` `SPRING-BOOT` `SPRING-DATA-JDBC` `H2-DATABASE` `JUNIT` `MOCKITO` `SWAGGER`
+
 ### Build, testes e execução :coffee:
 
 Antes de quaisquer das ações seguintes é necessário acessar a pasta raiz do projeto após a clonagem/ download do
