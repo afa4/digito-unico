@@ -2,7 +2,6 @@ package com.example.digitounico.services;
 
 import com.example.digitounico.exceptions.ApplicationException;
 import com.example.digitounico.repositories.AppUserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +13,7 @@ import java.util.UUID;
 
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUser;
 import static com.example.digitounico.utils.DigitoUnicoApplicationUtil.mockAppUserList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -32,8 +32,8 @@ public class UsersCrudServiceTest {
         try {
             usersCrudService.create(mockAppUser("Bob", "bob@email.com"));
         } catch (ApplicationException ex) {
-            Assertions.assertEquals("Email já cadastrado.", ex.getType().getMessage());
-            Assertions.assertEquals(HttpStatus.CONFLICT, ex.getType().getReturnStatus());
+            assertEquals("Email já cadastrado.", ex.getType().getMessage());
+            assertEquals(HttpStatus.CONFLICT, ex.getType().getReturnStatus());
         }
     }
 
@@ -53,9 +53,44 @@ public class UsersCrudServiceTest {
         try {
             usersCrudService.findByUid(UUID.randomUUID());
         } catch (ApplicationException ex) {
-            Assertions.assertEquals("Entidade não encontrada.", ex.getType().getMessage());
-            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.getType().getReturnStatus());
+            assertEquals("Entidade não encontrada.", ex.getType().getMessage());
+            assertEquals(HttpStatus.NOT_FOUND, ex.getType().getReturnStatus());
         }
+    }
+
+    @Test
+    public void shouldSearchForUserUidBeforeUpdate() {
+        var appUser = mockAppUser();
+        when(appUserRepository.findByUid(appUser.getUid())).thenReturn(appUser);
+
+        usersCrudService.updateOrCreate(appUser);
+
+        verify(appUserRepository).findByUid(eq(appUser.getUid()));
+    }
+
+    @Test
+    public void shouldCreateANewUser_whenCantFindUserToUpdate() {
+        var appUser = mockAppUser();
+        when(appUserRepository.findByUid(appUser.getUid())).thenReturn(null);
+
+        usersCrudService.updateOrCreate(appUser);
+
+        verify(appUserRepository).create(appUser);
+    }
+
+    @Test
+    public void shouldUpdateUser_whenFindsUserToUpdate() {
+        var appUser = mockAppUser("newName", "newEmail");
+
+        var oldAppUser = mockAppUser();
+        oldAppUser.setId(appUser.getId());
+        oldAppUser.setUid(appUser.getUid());
+
+        when(appUserRepository.findByUid(appUser.getUid())).thenReturn(oldAppUser);
+
+        usersCrudService.updateOrCreate(appUser);
+
+        verify(appUserRepository).update(eq(appUser));
     }
 
     @Test
