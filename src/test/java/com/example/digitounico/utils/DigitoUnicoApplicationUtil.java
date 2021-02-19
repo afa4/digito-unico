@@ -1,6 +1,7 @@
 package com.example.digitounico.utils;
 
 import com.example.digitounico.entities.AppUser;
+import com.example.digitounico.entities.SingleDigit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,14 @@ public class DigitoUnicoApplicationUtil {
         return list;
     }
 
+    public static SingleDigit mockSingleDigit(Long userId) {
+        return SingleDigit.builder()
+                .appUserId(userId)
+                .integer("9876")
+                .repeatTimes(1)
+                .singleDigit(2)
+                .build();
+    }
 
     private static long getRandomLongOnRange(int min, int max) {
         return (long) ((Math.random() * (max - min)) + min);
