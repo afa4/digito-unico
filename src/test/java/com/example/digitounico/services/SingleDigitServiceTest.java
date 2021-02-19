@@ -35,6 +35,15 @@ public class SingleDigitServiceTest {
     }
 
     @Test
+    public void shouldStoreCalculationOnCacheService_whenCalculatingSingleDigit() {
+        when(cache.get(anyString())).thenReturn(null);
+
+        singleDigitService.getSingleDigit("9875", 1);
+
+        verify(cache).store(eq("9875"), eq(2));
+    }
+
+    @Test
     public void shouldReturn2_whenInputsAreNumber9875AndRepeatTimes1() {
         setupCacheToReturnNull();
         assertEquals(2, singleDigitService.getSingleDigit("9875", 1));
